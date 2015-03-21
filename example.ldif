@@ -1,0 +1,144 @@
+version: 1
+
+dn: dc=com
+objectClass: domain
+objectClass: top
+dc: com
+
+dn: dc=example,dc=com
+objectClass: domain
+objectClass: top
+dc: example
+
+dn: ou=People,dc=example,dc=com
+objectClass: organizationalunit
+objectClass: top
+ou: People
+
+dn: cn=mtyler,ou=People,dc=example,dc=com
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: top
+cn: mtyler
+userpassword: instantiate
+givenname: Matthew
+telephonenumber: +1 408 555 7907
+sn: Tyler
+mail: mtyler@example.com
+ou: People
+
+dn: cn=mvaughan,ou=People,dc=example,dc=com
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: top
+cn: mvaughan
+userpassword: submitted
+givenname: Matthew
+telephonenumber: +1 408 555 4692
+sn: Vaughan
+mail: mvaughan@example.com
+ou: People
+
+dn: cn=mward,ou=People,dc=example,dc=com
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: top
+cn: mward
+userpassword: normal
+givenname: Marcus
+telephonenumber: +1 408 555 5688
+sn: Ward
+mail: mward@example.com
+ou: People
+
+dn: cn=mwhite,ou=People,dc=example,dc=com
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: top
+cn: mwhite
+userpassword: staple
+givenname: Morgan
+telephonenumber: +1 408 555 9620
+sn: White
+mail: mwhite@example.com
+ou: People
+
+dn: cn=pchassin,ou=People,dc=example,dc=com
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: top
+cn: pchassin
+userpassword: barbital
+givenname: Peter
+telephonenumber: +1 408 555 2816
+sn: Chassin
+mail: pchassin@example.com
+ou: People
+
+dn: cn=pcruse,ou=People,dc=example,dc=com
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: top
+cn: pcruse
+userpassword: pauper
+givenname: Patricia
+telephonenumber: +1 408 555 8641
+sn: Cruse
+mail: pcruse@example.com
+ou: People
+
+dn: cn=phun2,ou=People,dc=example,dc=com
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: top
+cn: phun2
+userpassword: absorb
+givenname: Pete
+telephonenumber: +1 408 555 0342
+sn: Hunt
+mail: phun2@example.com
+ou: People
+
+dn: cn=phunt,ou=People,dc=example,dc=com
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: top
+cn: phunt
+userpassword: wastewater
+givenname: Philip
+telephonenumber: +1 408 555 1242
+sn: Hunt
+mail: phunt@example.com
+ou: People
+
+
+dn: ou=Groups,dc=example,dc=com
+objectClass: organizationalunit
+objectClass: top
+ou: Groups
+description: Roles for Looker
+
+dn: cn=users,ou=Groups,dc=example,dc=com
+objectClass: groupOfNames
+objectClass: top
+ou: Groups
+cn: users
+description: People who can login
+member: cn=mward,ou=People,dc=example,dc=com
+member: cn=phunt,ou=People,dc=example,dc=com
+
+dn: cn=admins,ou=Groups,dc=example,dc=com
+objectClass: groupOfNames
+objectClass: top
+ou: Groups
+cn: admins
+description: People with admin rights
+member: cn=mward,ou=People,dc=example,dc=com

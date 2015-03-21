@@ -1,0 +1,12 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ruby-ldapserver (0.5.1)
+    trollop (2.1.2)
+
+PLATFORMS
+  java
+
+DEPENDENCIES
+  ruby-ldapserver (~> 0.5.1)
+  trollop (~> 2.1.2)
