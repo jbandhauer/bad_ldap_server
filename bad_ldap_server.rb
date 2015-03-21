@@ -152,8 +152,9 @@ end
 require 'trollop'
 
 opts = Trollop::options do
-  opt :port,    "Port to run on",     :short => "-p",  :type => :int,     :default => 1389
-  opt :ldif,    "LDIF file to load",  :short => "-f",  :type => :string,  :default => 'example.ldif'
+  opt :port,    "Port to run on",         :short => "-p",  :type => :int,     :default => 1389
+  opt :ldif,    "LDIF file to load",      :short => "-f",  :type => :string,  :default => 'example.ldif'
+  opt :tls,     "Load certs and use TLS", :short => "-t",  :type => :boolean, :default => false
 end
 
 # This is the shared object which carries our actual directory entries.
@@ -174,16 +175,23 @@ server_opts = {
   :port       => opts[:port],
   :nodelay    => true,
   :listen     => 10,
-# :ssl_key_file   => "key.pem",
-# :ssl_cert_file    => "cert.pem",
-# :ssl_on_connect   => true,
   :operation_class  => HashOperation,
   :operation_args   => [directory]
 }
 
+if opts[:tls]
+  server_opts.merge! (
+    {
+      :ssl_key_file     => "key.pem",
+      :ssl_cert_file    => "cert.pem",
+      :ssl_on_connect   => true,
+    }
+  )
+end
+
 server = LDAP::Server.new(server_opts)
 server.run_tcpserver
-puts "ldap server listening on port #{server_opts[:port]}"
+puts "ldap server listening on port #{server_opts[:port]} #{'(using TLS)' if opts[:tls]}"
 server.join
 
 

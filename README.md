@@ -12,6 +12,9 @@ To use...
 - Clone to location of your choice.
 - run `bundle install`
 - run using `ruby bad_ldap_server.rb`
-- it will run on port 1389 and load 'example.ldif' by default. 
+- it will run on port 1389 and load 'example.ldif' by default.
 - run `ruby bad_ldap_server.rb -h` to see help on options
 
+This also supports simple_tls. You can create self-signed certs by running `ruby mkcert.rb`. This will
+create local files called 'cert.pm' and 'key.pm'. To run the server in tls mode use `ruby bad_ldap_server.rb -t`
+This assumes that you are using a client that doesn't mind self-signed certs.
