@@ -54,17 +54,17 @@ sn: Ward
 mail: mward@example.com
 ou: People
 
-dn: cn=mwhite,ou=People,dc=example,dc=com
+dn: cn=mwhîte,ou=People,dc=example,dc=com
 objectClass: person
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
 objectClass: top
-cn: mwhite
-userpassword: staple
-givenname: Morgan
+cn: mwhîte
+userpassword: stóple
+givenname: Mórgan
 telephonenumber: +1 408 555 9620
-sn: White
-mail: mwhite@example.com
+sn: Whîte
+mail: mwhîte@example.com
 ou: People
 
 dn: cn=pchassin,ou=People,dc=example,dc=com
@@ -134,6 +134,10 @@ cn: users
 description: People who can login
 member: cn=mward,ou=People,dc=example,dc=com
 member: cn=phunt,ou=People,dc=example,dc=com
+member: cn=pcruse,ou=People,dc=example,dc=com
+memberUID: mward
+memberUID: phunt
+memberUID: pcruse
 
 dn: cn=admins,ou=Groups,dc=example,dc=com
 objectClass: groupOfNames
@@ -142,3 +146,4 @@ ou: Groups
 cn: admins
 description: People with admin rights
 member: cn=mward,ou=People,dc=example,dc=com
+memberUID: mward
