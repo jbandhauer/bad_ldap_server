@@ -6,6 +6,7 @@ GEM
 
 PLATFORMS
   java
+  ruby
 
 DEPENDENCIES
   ruby-ldapserver (~> 0.5.1)

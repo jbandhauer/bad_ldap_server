@@ -14,6 +14,22 @@ require 'json'
 require 'ldap/server'
 require 'ldap/server/util'
 
+# Monkey patch!
+class String
+  def to_utf8
+    dup.force_encoding('utf-8')
+  end
+end
+
+# Filter has string encoded as `ASCII-8BIT` even though the underlying data is actually UTF-8. Fix that.
+def fix_filter_encoding(f)
+  if f.is_a?(Array)
+    f.each{|e| fix_filter_encoding(e)}
+  elsif f.is_a?(String)
+    f.force_encoding('utf-8')
+  end
+end
+
 # experiment
 
 def normalize_dn(dn)
@@ -31,10 +47,11 @@ class HashOperation < LDAP::Server::Operation
   end
 
   def search(basedn, scope, deref, filter)
+    basedn = basedn.to_utf8
     # basedn = normalize_dn(basedn)
     # basedn.downcase!
 
-    # puts "Searching with base #{basedn}"
+    fix_filter_encoding(filter)
 
     case scope
     when LDAP::Server::BaseObject
@@ -49,6 +66,7 @@ class HashOperation < LDAP::Server::Operation
         next unless dn.index(basedn, -basedn.length)    # under basedn?
         # puts "    base matches"
         next unless LDAP::Server::Filter.run(filter, av)  # attribute filter?
+        # puts "    filter matches"
         send_SearchResultEntry(dn, av)
       end
 
@@ -59,6 +77,7 @@ class HashOperation < LDAP::Server::Operation
   end
 
   def add(dn, av)
+    dn = dn.to_utf8
     # dn = normalize_dn(dn)
     # dn.downcase!
     raise LDAP::ResultError::EntryAlreadyExists if @hash[dn]
@@ -66,6 +85,7 @@ class HashOperation < LDAP::Server::Operation
   end
 
   def del(dn)
+    dn = dn.to_utf8
     # dn = normalize_dn(dn)
     # dn.downcase!
     raise LDAP::ResultError::NoSuchObject unless @hash.has_key?(dn)
@@ -73,6 +93,7 @@ class HashOperation < LDAP::Server::Operation
   end
 
   def modify(dn, ops)
+    dn = dn.to_utf8
     # dn = normalize_dn(dn)
     # dn.downcase!
     entry = @hash[dn]
@@ -99,6 +120,8 @@ class HashOperation < LDAP::Server::Operation
 
   def simple_bind(version, dn, password)
     return if dn.nil?   # accept anonymous
+    dn = dn.to_utf8
+    password = password.to_utf8
     # dn = normalize_dn(dn)
     # dn.downcase!
 
@@ -131,6 +154,7 @@ def parse_ldif(string)
 
     next if line.match(/^dn:[\s]*(.*)/) do |m|
       dn = m[1]
+      # dn = m[1].downcase
       hash[dn] = {}
     end
 
@@ -164,7 +188,7 @@ directory = {}
 
 if opts[:ldif] && !opts[:ldif].empty?
   puts "Loading content from '#{opts[:ldif]}'"
-  directory = parse_ldif(File.read(opts[:ldif]))
+  directory = parse_ldif(File.read(opts[:ldif], :encoding => 'utf-8'))
 # puts directory.to_json
 end
 
@@ -180,7 +204,7 @@ server_opts = {
 }
 
 if opts[:tls]
-  server_opts.merge! (
+  server_opts.merge!(
     {
       :ssl_key_file     => "key.pem",
       :ssl_cert_file    => "cert.pem",
